@@ -1,6 +1,7 @@
 import os, sys
 from flask import ( Flask )
 from dotenv import ( load_dotenv )
+from .blueprints import ( todo )
 
 def load_environment_variables() -> None:
   # check if the .env file was loaded successfully
@@ -21,9 +22,12 @@ def create_app():
   app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") or "projectsecretkey"
   app.config["DATABASE"] = os.getenv("DATABASE") or "sqlite://"
   
-  @app.route("/")
-  def index():
-    return f"<h1>Todo App</h1>"
+  # @app.get("/")
+  # def index():
+  #   return render_template("index.html")
+  
+  # register todo blueprint
+  app.register_blueprint( todo.todo_blueprint )
   
   # return flask app instance
   return app
