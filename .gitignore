@@ -15,3 +15,6 @@ build/
 
 .env
 .flaskenv
+
+# node
+node_modules
