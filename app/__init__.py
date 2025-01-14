@@ -15,7 +15,7 @@ def create_app():
   load_environment_variables()
   
   # create flask app instance
-  app = Flask("Todo App", instance_relative_config=None)
+  app = Flask(__name__, instance_relative_config=None)
   
   # app configurations
   app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") or "projectsecretkey"
