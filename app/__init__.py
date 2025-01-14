@@ -22,10 +22,6 @@ def create_app():
   app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") or "projectsecretkey"
   app.config["DATABASE"] = os.getenv("DATABASE") or os.path.join( app.instance_path, "database.sqlite" )
   
-  # @app.get("/")
-  # def index():
-  #   return render_template("index.html")
-  
   # register todo blueprint
   app.register_blueprint( todo.todo_blueprint )
   
