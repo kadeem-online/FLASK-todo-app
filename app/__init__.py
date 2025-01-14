@@ -20,7 +20,7 @@ def create_app():
   
   # app configurations
   app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") or "projectsecretkey"
-  app.config["DATABASE"] = os.getenv("DATABASE") or "sqlite://"
+  app.config["DATABASE"] = os.getenv("DATABASE") or os.path.join( app.instance_path, "database.sqlite" )
   
   # @app.get("/")
   # def index():
