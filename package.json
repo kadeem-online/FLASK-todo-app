@@ -1,0 +1,20 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "Todo App in Flask",
+  "homepage": "https://github.com/kadeem-online/FLASK-todo-app#readme",
+  "bugs": {
+    "url": "https://github.com/kadeem-online/FLASK-todo-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kadeem-online/FLASK-todo-app.git"
+  },
+  "license": "MIT",
+  "author": "Alexander Kadeem",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
