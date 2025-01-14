@@ -15,6 +15,12 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run tailwind:compile",
+    "tailwind:watch": "npx tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --watch",
+    "tailwind:compile": "npx tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
   }
 }
