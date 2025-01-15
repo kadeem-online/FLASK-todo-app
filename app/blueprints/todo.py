@@ -1,5 +1,5 @@
 from app.db import ( get_engine, TodoModel )
-from flask import ( Blueprint, flash, render_template )
+from flask import ( Blueprint, flash, redirect, render_template, url_for )
 from flask_wtf import ( FlaskForm )
 from sqlalchemy.orm import ( Session )
 from wtforms import ( StringField, SubmitField )
@@ -35,11 +35,12 @@ def index():
       session.add(_todo)
       session.commit()
       
-      # clear description field on successful entry
-      new_todo_form.description.data = ""
-      
       # flash success message
       flash("Task Added", "todo-added")
+      
+      # redirect to clear fields
+      return redirect(url_for("main.index"))
+    
   elif new_todo_form.errors:
     # flash all form validation errors for the fields
     for field, errors in new_todo_form.errors.items():
