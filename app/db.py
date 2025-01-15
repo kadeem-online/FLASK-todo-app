@@ -1,0 +1,54 @@
+from datetime import ( datetime )
+from flask import ( current_app, g )
+from sqlalchemy import ( Boolean, DateTime, Engine, String, create_engine )
+from sqlalchemy.orm import ( DeclarativeBase, Mapped, mapped_column )
+
+class Base(DeclarativeBase):
+  pass
+
+class TodoModel(Base):
+  __tablename__ = "todos"
+  
+  id:Mapped[int] = mapped_column(
+    primary_key=True,
+    nullable=False,
+    autoincrement=True
+  )
+  description:Mapped[str] = mapped_column(
+    String(255),
+    nullable=False
+  )
+  is_completed:Mapped[bool] = mapped_column(
+    Boolean,
+    default=False,
+    nullable=False
+  )
+  created_at:Mapped[datetime] = mapped_column(
+    DateTime,
+    default=datetime.utcnow
+  )
+  updated_at:Mapped[datetime] = mapped_column(
+    DateTime,
+    nullable=True,
+  )
+  
+  def __repr__(self):
+    _status = "Complete" if self.is_completed else "Incomplete"
+    return f"Task: '{self.description}', Status: {_status}"
+  
+def initialize_database() -> None:
+  engine = get_engine()
+  Base.metadata.create_all(bind=engine)
+  return
+
+def get_engine()->Engine:
+  if 'db_engine' not in g:
+    engine:Engine = create_engine(
+      "sqlite:///" + current_app.config["DATABASE_URL"], echo=True
+    )
+    g.db_engine = engine
+  
+  return g.db_engine
+  
+  
+  
