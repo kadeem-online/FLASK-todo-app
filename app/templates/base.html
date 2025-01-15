@@ -29,6 +29,30 @@
     <!-- BASE FOOTER SCRIPTS -->
     <!-- toastify js -->
     <script src="{{ url_for('static', filename='js/toastify.min.js') }}"></script>
+    <!-- custom error display for toasts -->
+    <script>
+      function show_toast_error(message) {
+        Toastify({
+          text: message,
+          gravity: "bottom",
+          duration: 3000,
+          className: "error-toast",
+        }).showToast();
+
+        return;
+      }
+
+      function show_toast_success(message) {
+        Toastify({
+          text: message,
+          gravity: "bottom",
+          duration: 3000,
+          className: "success-toast",
+        }).showToast();
+
+        return;
+      }
+    </script>
 
     <!-- CHILD FOOTER SCRIPTS -->
     {% block footer_scripts %}{% endblock %}
