@@ -43,8 +43,7 @@ class TodoModel(Base):
       "updated_at": self.__readable_date(self.updated_at)
     }
     
-    _todo_json = json.dumps(_todo)
-    return str(_todo_json)
+    return json.dumps(_todo)
   
   def __readable_date(self, date:datetime|None):
     _date_format = "%d-%b-%Y, %I:%M %p"
