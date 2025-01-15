@@ -19,8 +19,9 @@ def create_app():
   app = Flask(__name__, instance_relative_config=None)
   
   # app configurations
+  _database_name = os.getenv("DATABASE_NAME") or "database.sqlite"
   app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") or "projectsecretkey"
-  app.config["DATABASE"] = os.getenv("DATABASE") or os.path.join( app.instance_path, "database.sqlite" )
+  app.config["DATABASE_URL"] = os.path.join( app.instance_path, _database_name )
   
   # create the instance folder
   try:
