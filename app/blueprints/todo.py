@@ -17,9 +17,20 @@ class NewTodoForm(FlaskForm):
         ]
     )
     submit = SubmitField('Add Todo')
+    
+# function for fetching all todos and returns them as a list
+def fetch_all_todos():
+  _engine = get_engine()
+  with Session(_engine) as session:
+    todos = session.query(TodoModel).all()
+    return todos
 
 @todo_blueprint.route("/", methods=['GET', 'POST'])
 def index():
+  # list of todos
+  _todo_list = fetch_all_todos()
+  
+  # new todo WTF-Form
   new_todo_form = NewTodoForm()
   
   if new_todo_form.validate_on_submit():
@@ -47,4 +58,4 @@ def index():
       for error in errors:
         flash(f"{error}", "error")
 
-  return render_template("index.html", form=new_todo_form )
+  return render_template("index.html", form=new_todo_form, todo_list=_todo_list )
