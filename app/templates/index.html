@@ -5,5 +5,62 @@
 
 <!-- content block -->
 {% block content %}
-<h1>Todo App Homepage</h1>
+<div class="h-screen flex flex-col">
+  <!-- app header containing the title and new task form -->
+  <div class="bg-gray-50 shadow">
+    <div class="container px-5 py-5 mx-auto max-w-4xl flex flex-col gap-4">
+      <div id="app-title" class="text-2xl font-medium text-gray-700">
+        Todo App
+      </div>
+      <form id="new-todo-form" method="POST" class="flex flex-col gap-3 sm:flex-row">
+        {{ form.csrf_token }}
+        {{
+          form.description(
+            class="w-full px-2 py-1 bg-gray-200 placeholder:italic placeholder:text-gray-500 placeholder:font-medium border border-gray-400 focus:outline-1 focus:outline-gray-700 rounded",
+            placeholder="Todo description here..."
+          )
+        }}
+        {{
+          form.submit(
+            class="w-fit py-1 px-4 bg-emerald-600 text-emerald-50 rounded"
+          )
+        }}
+      </form>
+    </div>
+  </div>
+
+  <!-- app body, caontains the existing todo items -->
+  <div class="flex-grow overflow-auto">
+    <div class="container p-5 mx-auto max-w-4xl">
+      <p class="italic">Display tasks here...</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+<!-- Footer Scripts -->
+{% block footer_scripts %}
+
+<!-- toast homepage errors: START -->
+{% with errors = get_flashed_messages(category_filter=['error']) %}
+{% if errors %}  
+  {% for error_message in errors %}
+  <script>
+    show_toast_error("{{error_message}}")
+  </script>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+<!-- toast homepage errors: END -->
+
+<!-- toast successful todo creation: START -->
+{% with task_added = get_flashed_messages(category_filter=['todo-added']) %}
+{% if task_added %}
+  <script>
+    show_toast_success("{{task_added[0]}}")
+  </script>
+{% endif %}
+{% endwith %}
+<!-- toast successful todo creation: END -->
+
 {% endblock %}
