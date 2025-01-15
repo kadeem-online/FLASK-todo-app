@@ -22,6 +22,12 @@ def create_app():
   app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") or "projectsecretkey"
   app.config["DATABASE"] = os.getenv("DATABASE") or os.path.join( app.instance_path, "database.sqlite" )
   
+  # create the instance folder
+  try:
+    os.makedirs(app.instance_path)
+  except OSError:
+    pass
+  
   # register todo blueprint
   app.register_blueprint( todo.todo_blueprint )
   
