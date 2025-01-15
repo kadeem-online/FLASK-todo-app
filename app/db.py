@@ -1,3 +1,5 @@
+import json
+
 from datetime import ( datetime )
 from flask import ( current_app, g )
 from sqlalchemy import ( Boolean, DateTime, Engine, String, create_engine )
@@ -33,8 +35,26 @@ class TodoModel(Base):
   )
   
   def __repr__(self):
-    _status = "Complete" if self.is_completed else "Incomplete"
-    return f"Task: '{self.description}', Status: {_status}"
+    _todo = {
+      "id": self.id,
+      "description": self.description,
+      "created_at": self.__readable_date(self.created_at),
+      "is_completed": self.is_completed,
+      "updated_at": self.__readable_date(self.updated_at)
+    }
+    
+    _todo_json = json.dumps(_todo)
+    return str(_todo_json)
+  
+  def __readable_date(self, date:datetime|None):
+    _date_format = "%d-%b-%Y, %I:%M %p"
+    _readable_date = None
+    
+    if date is None:
+      return _readable_date
+    
+    _readable_date = date.strftime(_date_format)
+    return _readable_date
   
 def initialize_database() -> None:
   engine = get_engine()
