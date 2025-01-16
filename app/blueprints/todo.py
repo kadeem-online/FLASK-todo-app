@@ -59,7 +59,7 @@ def create():
   return redirect(url_for("todo.index"))
 
 # toggles the specified todo task
-@todo_blueprint.post("/toggle")
+@todo_blueprint.post("/toggle/todo_id")
 def toggle():
   try:
     _target_todo = request.form.get("todo_id", type=int)
@@ -77,6 +77,31 @@ def toggle():
     
   except Exception as e:
     flash(f"ERROR: {e}", "error")
+  
+  # redirect to home route
+  return redirect(url_for("todo.index"))
+
+@todo_blueprint.post("/delete")
+def delete():
+  try:
+    _target_todo = request.form.get("todo_id", type=int)
+    
+    if _target_todo is None:
+      raise ValueError("A todo item ID is required.")
+    
+    _engine = get_engine()
+    
+    with Session(_engine) as session:
+      _todo = session.get(TodoModel, int(_target_todo))
+      
+      if _todo is None:
+        raise LookupError(f"No task with id of {_target_todo} was found!")
+      
+      session.delete(_todo)
+      session.commit()
+  except Exception as e:
+    flash(f"DELETION FAILED: {e}", "error")
+    
   
   # redirect to home route
   return redirect(url_for("todo.index"))

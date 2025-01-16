@@ -33,7 +33,7 @@
         action="{{ url_for('todo.toggle') }}"
         method="post"
       >
-        <input type="hidden" name="todo_id" value="{{ todo['id'] }}">
+        <input type="hidden" name="todo_id" value="{{ todo['id'] }}" />
         <button
           type="submit"
           class="todo-checkbox size-7 bg-emerald-50 border-2 border-emerald-500 rounded flex items-center justify-center hover:cursor-pointer"
@@ -49,7 +49,9 @@
     </div>
 
     <div class="todo-description flex-grow self-center">
-      <p class="text-emerald-900 text-sm font-medium {{'line-through' if todo['is_completed'] }}">
+      <p
+        class="text-emerald-900 text-sm font-medium {{'line-through' if todo['is_completed'] }}"
+      >
         {{ todo["description"] }}
       </p>
     </div>
@@ -75,25 +77,33 @@
         </svg>
       </div>
 
-      <div
-        class="action-delete size-7 flex items-center justify-center bg-red-700 rounded hover:cursor-pointer"
-        tabindex="0"
+      <form
+        data-todo-delete
+        action="{{ url_for('todo.delete') }}"
+        method="post"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-5 text-gray-50 stroke-2"
+        <input type="hidden" name="todo_id" value="{{ todo['id'] }}" />
+        <button
+          type="submit"
+          class="action-delete size-7 flex items-center justify-center bg-red-700 rounded hover:cursor-pointer"
+          tabindex="0"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18 18 6M6 6l12 12"
-          />
-        </svg>
-      </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-5 text-gray-50 stroke-2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </form>
     </div>
   </li>
   {% endfor %}
