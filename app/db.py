@@ -3,7 +3,7 @@ import json
 from datetime import ( datetime )
 from flask import ( current_app, g )
 from sqlalchemy import ( Boolean, DateTime, Engine, String, create_engine )
-from sqlalchemy.orm import ( DeclarativeBase, Mapped, mapped_column )
+from sqlalchemy.orm import ( DeclarativeBase, Mapped, Session, mapped_column )
 
 class Base(DeclarativeBase):
   pass
@@ -68,6 +68,12 @@ def get_engine()->Engine:
     g.db_engine = engine
   
   return g.db_engine
-  
+
+# function for fetching all todos and returns them as a list
+def get_all_todos():
+  _engine = get_engine()
+  with Session(_engine) as session:
+    todos = session.query(TodoModel).all()
+    return todos
   
   

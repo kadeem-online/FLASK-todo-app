@@ -1,4 +1,4 @@
-from app.db import ( get_engine, TodoModel )
+from app.db import ( TodoModel, get_all_todos, get_engine,  )
 from flask import ( Blueprint, flash, redirect, render_template, url_for )
 from flask_wtf import ( FlaskForm )
 from sqlalchemy.orm import ( Session )
@@ -17,18 +17,11 @@ class NewTodoForm(FlaskForm):
         ]
     )
     submit = SubmitField('Add Todo')
-    
-# function for fetching all todos and returns them as a list
-def fetch_all_todos():
-  _engine = get_engine()
-  with Session(_engine) as session:
-    todos = session.query(TodoModel).all()
-    return todos
 
 @todo_blueprint.route("/", methods=['GET', 'POST'])
 def index():
   # list of todos
-  _todo_list = fetch_all_todos()
+  _todo_list = get_all_todos()
   
   # new todo WTF-Form
   new_todo_form = NewTodoForm()
