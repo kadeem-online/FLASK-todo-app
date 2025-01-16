@@ -28,22 +28,28 @@
     class="todo-item px-2 py-2 flex flex-row gap-4 items-start bg-emerald-200 even:bg-emerald-300 border border-emerald-500 rounded"
   >
     <div class="">
-      <div
-        class="todo-checkbox size-7 bg-emerald-50 border-2 border-emerald-500 rounded flex items-center justify-center hover:cursor-pointer"
-        tabindex="0"
-        role="switch"
-        aria-checked="{{'true' if todo['is_completed'] else 'false' }}"
+      <form
+        data-todo-toggle
+        action="{{ url_for('todo.toggle') }}"
+        method="post"
       >
-        <div
-          class="todo-checkmark size-4 rounded-sm bg-emerald-500 {{'block' if todo['is_completed'] else 'hidden' }}"
-        ></div>
-      </div>
+        <input type="hidden" name="todo_id" value="{{ todo['id'] }}">
+        <button
+          type="submit"
+          class="todo-checkbox size-7 bg-emerald-50 border-2 border-emerald-500 rounded flex items-center justify-center hover:cursor-pointer"
+          tabindex="0"
+          role="switch"
+          aria-checked="{{'true' if todo['is_completed'] else 'false' }}"
+        >
+          <div
+            class="todo-checkmark size-4 rounded-sm bg-emerald-500 {{'block' if todo['is_completed'] else 'hidden' }}"
+          ></div>
+        </button>
+      </form>
     </div>
 
     <div class="todo-description flex-grow self-center">
-      <p
-        class="text-emerald-900 text-sm font-medium"
-      >
+      <p class="text-emerald-900 text-sm font-medium {{'line-through' if todo['is_completed'] }}">
         {{ todo["description"] }}
       </p>
     </div>

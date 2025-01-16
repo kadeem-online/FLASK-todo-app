@@ -1,5 +1,5 @@
 from app.db import ( TodoModel, get_all_todos, get_engine,  )
-from flask import ( Blueprint, flash, redirect, render_template, url_for )
+from flask import ( Blueprint, flash, redirect, render_template, request, url_for )
 from flask_wtf import ( FlaskForm )
 from sqlalchemy.orm import ( Session )
 from wtforms import ( StringField, SubmitField )
@@ -56,4 +56,27 @@ def create():
         flash(f"{error}", "error")
   
   # redirect to clear fields
+  return redirect(url_for("todo.index"))
+
+# toggles the specified todo task
+@todo_blueprint.post("/toggle")
+def toggle():
+  try:
+    _target_todo = request.form.get("todo_id", type=int)
+    
+    if _target_todo is None:
+      raise "A todo item ID is required."
+    
+    _engine = get_engine()
+    
+    with Session(_engine) as session:
+      _todo = session.get(TodoModel, int(_target_todo))
+      _new_status = not _todo.is_completed
+      _todo.is_completed = _new_status
+      session.commit()
+    
+  except Exception as e:
+    flash(f"ERROR: {e}", "error")
+  
+  # redirect to home route
   return redirect(url_for("todo.index"))
