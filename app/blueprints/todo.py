@@ -5,7 +5,7 @@ from sqlalchemy.orm import ( Session )
 from wtforms import ( StringField, SubmitField )
 from wtforms.validators import ( DataRequired, Length )
 
-todo_blueprint = Blueprint('main', __name__ )
+todo_blueprint = Blueprint('todo', __name__ )
 
 class NewTodoForm(FlaskForm):
     description = StringField(
@@ -24,11 +24,18 @@ def index():
   _todo_list = get_all_todos()
   
   # new todo WTF-Form
-  new_todo_form = NewTodoForm()
+  _new_todo_form = NewTodoForm()
+
+  return render_template("index.html", form=_new_todo_form, todo_list=_todo_list )
+
+# Route for creating new todo items
+@todo_blueprint.post("/create")
+def create():
+  _new_todo_form = NewTodoForm()
   
-  if new_todo_form.validate_on_submit():
+  if _new_todo_form.validate_on_submit():
     # get the contents of the todo
-    _todo_description = new_todo_form.description.data
+    _todo_description = _new_todo_form.description.data
     
     # create new Todo item
     _todo = TodoModel(description=_todo_description)
@@ -41,14 +48,12 @@ def index():
       
       # flash success message
       flash("Task Added", "todo-added")
-      
-      # redirect to clear fields
-      return redirect(url_for("main.index"))
     
-  elif new_todo_form.errors:
+  elif _new_todo_form.errors:
     # flash all form validation errors for the fields
-    for field, errors in new_todo_form.errors.items():
+    for field, errors in _new_todo_form.errors.items():
       for error in errors:
         flash(f"{error}", "error")
-
-  return render_template("index.html", form=new_todo_form, todo_list=_todo_list )
+  
+  # redirect to clear fields
+  return redirect(url_for("todo.index"))
