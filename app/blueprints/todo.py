@@ -65,12 +65,16 @@ def toggle():
     _target_todo = request.form.get("todo_id", type=int)
     
     if _target_todo is None:
-      raise "A todo item ID is required."
+      raise ValueError("A todo item ID is required.")
     
     _engine = get_engine()
     
     with Session(_engine) as session:
       _todo = session.get(TodoModel, int(_target_todo))
+      
+      if _todo is None:
+        raise LookupError(f"No task with id of {_target_todo} was found!")
+      
       _new_status = not _todo.is_completed
       _todo.is_completed = _new_status
       session.commit()
