@@ -26,7 +26,7 @@ def index():
   # new todo WTF-Form
   _new_todo_form = NewTodoForm()
 
-  return render_template("index.html", form=_new_todo_form, todo_list=_todo_list )
+  return render_template("index.jinja2", form=_new_todo_form, todo_list=_todo_list )
 
 # Route for creating new todo items
 @todo_blueprint.post("/create")

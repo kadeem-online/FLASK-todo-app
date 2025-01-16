@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{% endblock %} - Todo App</title>
+
+  <!-- BASE STYLESHEETS -->
+  <!-- tailwind styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}" />
+  <!-- toastify css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/toastify.min.css') }}" />
+
+  <!-- CHILD STYLESHEETS -->
+  {% block stylesheets %}{% endblock %}
+
+  <!-- CHILD HEADER SCRIPTS -->
+  {% block header_scripts %}{% endblock %}
+</head>
+
+<body class="bg-gray-200 text-gray-900">
+  <main id="content">{% block content %}{% endblock %}</main>
+
+  <!-- BASE FOOTER SCRIPTS -->
+  <!-- toastify js -->
+  <script src="{{ url_for('static', filename='js/toastify.min.js') }}"></script>
+  <!-- custom error display for toasts -->
+  <script>
+    function show_toast_error(message) {
+      Toastify({
+        text: message,
+        gravity: "bottom",
+        duration: 3000,
+        className: "error-toast",
+      }).showToast();
+
+      return;
+    }
+
+    function show_toast_success(message) {
+      Toastify({
+        text: message,
+        gravity: "bottom",
+        duration: 3000,
+        className: "success-toast",
+      }).showToast();
+
+      return;
+    }
+  </script>
+
+  <!-- CHILD FOOTER SCRIPTS -->
+  {% block footer_scripts %}{% endblock %}
+</body>
+
+</html>
